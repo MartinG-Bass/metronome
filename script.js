@@ -1,5 +1,5 @@
-const button = document.querySelector("button");
-button.addEventListener("click", () =>{
+const playButton = document.getElementById("playButton");
+playButton.addEventListener("click", () =>{
     // Crear el contexto de audio
     let audioContext = new AudioContext();
     var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -15,3 +15,11 @@ button.addEventListener("click", () =>{
     console.log("DEbug");
 
 }); 
+
+const submitTempoBtn = document.getElementById("submitTempo");
+submitTempoBtn.addEventListener("click", () => {
+    const inputTempo = document.getElementById("inputTempo");
+    let tempo = inputTempo.value;
+    console.log(tempo);
+    inputTempo.value = "";
+});
