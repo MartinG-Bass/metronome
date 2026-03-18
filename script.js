@@ -13,6 +13,7 @@ let tempoPrograming = false;
 let initialTempo = tempo;
 let finalTempo = tempo;
 let numberOfMeasures = 0;
+let measure = 4;
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -63,6 +64,10 @@ function scheduleBeat(){
 }
 
 function setNextBeat(){
+    if(tempoPrograming){
+        updateTempo();
+    }
+
     nextBeatTime += 60/tempo;
     beatCounter++;
     if(beatCounter >  measure){
@@ -93,9 +98,22 @@ function accentBeat(){
     
 }
 
+//We are gonna update the tempo every beat
+function updateTempo(){
+    const numberOfBeats = numberOfMeasures * measure;
+    const step = (finalTempo - initialTempo)/numberOfBeats;
+    tempo += step;
+    if(initialTempo<finalTempo && tempo>=finalTempo){
+        tempoPrograming = false;
+    } else if(initialTempo>finalTempo && tempo<=finalTempo){
+        tempoPrograming = false;
+    }
+}
+
 function resetBeats(){
     beatCounter = 1;
     lastBeatAccented = 0;
+    nextBeatTime = audioContext.currentTime + 0.1;
 }
 
 const submitTempoBtn = document.getElementById("submitTempo");
@@ -103,6 +121,7 @@ submitTempoBtn.addEventListener("click", () => {
     const inputTempo = document.getElementById("inputTempo");
     tempo = inputTempo.value;
     inputTempo.value = "";
+    resetBeats();
 });
 
 const measureInput = document.getElementById("measure");
@@ -160,7 +179,9 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
             initialTempo = Number(initialTempoInput.value);
             finalTempo = Number(finalTempoInput.value);
             numberOfMeasures = Number(numberOfMeasuresInput.value);
-
+            
+            tempo = initialTempo;
+            tempoPrograming = true;
             console.log(initialTempo,finalTempo, numberOfMeasures);
         });
     } else{
