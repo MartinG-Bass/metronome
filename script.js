@@ -50,6 +50,11 @@ function scheduler(){
 }
 
 function scheduleBeat(){
+    if(skipBeat()){
+        return;
+    }
+
+    //Create the note
     const osc = audioContext.createOscillator();
     osc.connect(audioContext.destination);
     if(beatCounter === 1){
@@ -61,6 +66,15 @@ function scheduleBeat(){
     }
     osc.start(nextBeatTime);
     osc.stop(nextBeatTime+noteLength);
+}
+
+function skipBeat(){
+    //Now for the debug part we are gonna skip every 3rd beat
+    if(beatCounter%3==0){
+        return true;
+    } else{
+        return false;
+    }
 }
 
 function setNextBeat(){
