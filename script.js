@@ -2,12 +2,13 @@
 const noteLength = 0.05;
 const lookAheadTime = 0.25;
 let audioContext = new AudioContext();
-let tempo = 120.0;
+let tempo = 60.0;
 let playing = false;
 let nextBeatTime = 0;
 let playMetronome = null;
-let beatCounter = 0;
-let accentEveryBeat = 1;
+let beatCounter = 1;
+let lastBeatAccented = 0;
+let accentEveryBeat = 0;
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -30,6 +31,7 @@ playButton.addEventListener("click", () => {
         playButton.textContent = "Start";
         clearInterval(playMetronome);
         playMetronome = null;
+        resetBeats();
     }
 
 
@@ -45,8 +47,10 @@ function scheduler(){
 function scheduleBeat(){
     const osc = audioContext.createOscillator();
     osc.connect(audioContext.destination);
-    if(accentBeat()){
+    if(beatCounter === 1){
         osc.frequency.value = 880.0;
+    } else if(accentBeat()){
+        osc.frequency.value = 660.0;
     } else{
         osc.frequency.value = 440.0;
     }
@@ -57,13 +61,26 @@ function scheduleBeat(){
 function setNextBeat(){
     nextBeatTime += 60/tempo;
     beatCounter++;
-    if(beatCounter >=  accentEveryBeat){
-        beatCounter = 0;
+    if(beatCounter >  measure){
+        beatCounter = 1;
     }
 }
 
 function accentBeat(){
-    if(beatCounter%accentEveryBeat == 0){
+    if(accentEveryBeat === 0){
+        return false;
+    } 
+    
+    let beatsSinceLastAccented;
+    if(beatCounter > lastBeatAccented){
+        beatsSinceLastAccented = beatCounter-lastBeatAccented;
+    } else if(lastBeatAccented >= beatCounter){
+        beatsSinceLastAccented = beatCounter + measure - lastBeatAccented;
+    }
+    
+
+    if(beatsSinceLastAccented%accentEveryBeat == 0){
+        lastBeatAccented = beatCounter;
         return true;
     } else{
         return false;
@@ -72,11 +89,22 @@ function accentBeat(){
     
 }
 
+function resetBeats(){
+    beatCounter = 1;
+    lastBeatAccented = 0;
+}
+
 const submitTempoBtn = document.getElementById("submitTempo");
 submitTempoBtn.addEventListener("click", () => {
     const inputTempo = document.getElementById("inputTempo");
     tempo = inputTempo.value;
     inputTempo.value = "";
+});
+
+const measureInput = document.getElementById("measure");
+measureInput.addEventListener("change", ()=>{
+    measure = Number(measureInput.value);
+    console.log("Measure:",measure);
 });
 
 document.querySelectorAll('input[name="accentBeat"]').forEach(radio => {
