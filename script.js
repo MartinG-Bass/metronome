@@ -10,6 +10,9 @@ let beatCounter = 1;
 let lastBeatAccented = 0;
 let accentEveryBeat = 0;
 let tempoPrograming = false;
+let initialTempo = tempo;
+let finalTempo = tempo;
+let numberOfMeasures = 0;
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -117,34 +120,49 @@ document.querySelectorAll('input[name="accentBeat"]').forEach(radio => {
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
 tempoProgramingCheckBox.addEventListener("change", ()=>{
-    tempoPrograming = tempoProgramingCheckBox.checked;
-
     const tempoProgramingContainer = document.getElementById("tempoProgramingContainer");
 
-    if(tempoPrograming){
+    if(tempoProgramingCheckBox.checked){
         //Form
         const tempoForm = document.createElement("form");
         //Inputs
-        const initialTempo = document.createElement("input");
-        const finalTempo = document.createElement("input");
-        const numberOfMeasures = document.createElement("input");
+        const initialTempoInput = document.createElement("input");
+        const finalTempoInput = document.createElement("input");
+        const numberOfMeasuresInput = document.createElement("input");
         //Labels
         const initialTempoLabel = document.createElement("label");
         const finalTempoLabel = document.createElement("label");
         const numberOfMeasuresLabel= document.createElement("label");
-
+        //Button
+        const submitBtn = document.createElement("button");
+        const resetBtn = document.createElement("button");
+        //Text Content
         initialTempoLabel.textContent = "Initial Tempo";
         finalTempoLabel.textContent = "Final Tempo";
         numberOfMeasuresLabel.textContent = "Number of Measures";
-
+        submitBtn.textContent = "Submit";
+        submitBtn.type="button";
+        resetBtn.textContent = "Clear";
+        resetBtn.type = "reset"
+;
         tempoForm.appendChild(initialTempoLabel);
-        tempoForm.appendChild(initialTempo);
+        tempoForm.appendChild(initialTempoInput);
         tempoForm.appendChild(finalTempoLabel);
-        tempoForm.appendChild(finalTempo);
+        tempoForm.appendChild(finalTempoInput);
         tempoForm.appendChild(numberOfMeasuresLabel);
-        tempoForm.appendChild(numberOfMeasures);
+        tempoForm.appendChild(numberOfMeasuresInput);
+        tempoForm.appendChild(submitBtn);
+        tempoForm.appendChild(resetBtn);
 
         tempoProgramingContainer.appendChild(tempoForm);
+
+        submitBtn.addEventListener("click", ()=>{
+            initialTempo = Number(initialTempoInput.value);
+            finalTempo = Number(finalTempoInput.value);
+            numberOfMeasures = Number(numberOfMeasuresInput.value);
+
+            console.log(initialTempo,finalTempo, numberOfMeasures);
+        });
     } else{
         tempoProgramingContainer.removeChild(tempoProgramingContainer.lastChild);
     }
