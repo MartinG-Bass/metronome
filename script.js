@@ -9,6 +9,7 @@ let playMetronome = null;
 let beatCounter = 1;
 let lastBeatAccented = 0;
 let accentEveryBeat = 0;
+let tempoPrograming = false;
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -112,4 +113,39 @@ document.querySelectorAll('input[name="accentBeat"]').forEach(radio => {
     accentEveryBeat = Number(radio.value);
     console.log('accentEveryBeat:', accentEveryBeat);
   });
-});   
+});  
+
+const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
+tempoProgramingCheckBox.addEventListener("change", ()=>{
+    tempoPrograming = tempoProgramingCheckBox.checked;
+
+    const tempoProgramingContainer = document.getElementById("tempoProgramingContainer");
+
+    if(tempoPrograming){
+        //Form
+        const tempoForm = document.createElement("form");
+        //Inputs
+        const initialTempo = document.createElement("input");
+        const finalTempo = document.createElement("input");
+        const numberOfMeasures = document.createElement("input");
+        //Labels
+        const initialTempoLabel = document.createElement("label");
+        const finalTempoLabel = document.createElement("label");
+        const numberOfMeasuresLabel= document.createElement("label");
+
+        initialTempoLabel.textContent = "Initial Tempo";
+        finalTempoLabel.textContent = "Final Tempo";
+        numberOfMeasuresLabel.textContent = "Number of Measures";
+
+        tempoForm.appendChild(initialTempoLabel);
+        tempoForm.appendChild(initialTempo);
+        tempoForm.appendChild(finalTempoLabel);
+        tempoForm.appendChild(finalTempo);
+        tempoForm.appendChild(numberOfMeasuresLabel);
+        tempoForm.appendChild(numberOfMeasures);
+
+        tempoProgramingContainer.appendChild(tempoForm);
+    } else{
+        tempoProgramingContainer.removeChild(tempoProgramingContainer.lastChild);
+    }
+});
