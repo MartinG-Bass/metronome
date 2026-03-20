@@ -2,7 +2,7 @@
 const noteLength = 0.05;
 const lookAheadTime = 0.25;
 let audioContext = new AudioContext();
-let tempo = 60.0;
+let tempo = 120.0;
 let playing = false;
 let nextBeatTime = 0;
 let playMetronome = null;
@@ -69,12 +69,12 @@ function scheduleBeat(){
 }
 
 function skipBeat(){
-    //Now for the debug part we are gonna skip every 3rd beat
+    /*//Now for the debug part we are gonna skip every 3rd beat
     if(beatCounter%3==0){
         return true;
     } else{
         return false;
-    }
+    }*/
 }
 
 function setNextBeat(){
@@ -133,10 +133,13 @@ function resetBeats(){
 const tempoShown = document.getElementById("tempoOutput");
 const tempoInput = document.getElementById("tempoInput");
 //Defalut tempo at 120 BPM
-tempoInput.value = tempoShown.textContent = 120;
+
+tempoInput.value = tempo;
+tempoShown.textContent = tempo;
 
 tempoInput.addEventListener("input", (e) => {
     tempoShown.textContent = e.target.value;
+    tempo = e.target.value;
 });
 
 const measureInput = document.getElementById("measure");
