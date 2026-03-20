@@ -78,14 +78,14 @@ function skipBeat(){
 }
 
 function setNextBeat(){
-    if(tempoPrograming){
-        updateTempo();
-    }
-
     nextBeatTime += 60/tempo;
     beatCounter++;
     if(beatCounter >  measure){
         beatCounter = 1;
+    }
+
+    if(tempoPrograming){
+        updateTempo();
     }
 }
 
@@ -117,6 +117,8 @@ function updateTempo(){
     const numberOfBeats = numberOfMeasures * measure;
     const step = (finalTempo - initialTempo)/numberOfBeats;
     tempo += step;
+    tempoInput.value = tempo;
+    tempoShown.textContent = Math.floor(tempo);
     if(initialTempo<finalTempo && tempo>=finalTempo){
         tempoPrograming = false;
     } else if(initialTempo>finalTempo && tempo<=finalTempo){
