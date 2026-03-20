@@ -20,6 +20,8 @@ var node = audioContext.createBufferSource();
 node.buffer = buffer;
 node.start(0);*/
 
+_init_();
+
 //Function to Start/Stop the metronome
 const playButton = document.getElementById("playButton");
 playButton.addEventListener("click", () => {
@@ -41,6 +43,11 @@ playButton.addEventListener("click", () => {
 
 }); 
 
+function _init_(){
+    redoAccentedBeats();
+    resetAccentedBeats();
+}
+
 function scheduler(){
     while(nextBeatTime < audioContext.currentTime + lookAheadTime){
         scheduleBeat();
@@ -55,7 +62,7 @@ function scheduler(){
     3 - High Pitch Beat (Only for the 1 by now)
 */
 function scheduleBeat(){
-    const beatTag = accentedBeats[beatCounter];
+    const beatTag = accentedBeats[beatCounter-1];
     
     if(beatTag === 0){//Skipped Beat
         return;
@@ -70,7 +77,7 @@ function scheduleBeat(){
     } else if(beatTag === 2){ 
         //Accented Beat
         osc.frequency.value = 660.0;
-    } else{
+    } else if(beatTag === 3){
         //High pitch beat
         osc.frequency.value = 880.0;
     }
@@ -121,6 +128,23 @@ function resetAccentedBeats(){
     }
 }
 
+function redoAccentedBeats(){
+    const checkboxesAccentedBeats = document.querySelectorAll('input[name=accentedBeats]');
+    checkboxesAccentedBeats.forEach((cb) => {
+        cb.addEventListener("change", () => {
+            const beatNumber = Number(cb.value);
+            if(beatNumber === 1 && cb.checked === true){//First Beat
+                accentedBeats[beatNumber-1] = 3;  
+            } else if(cb.checked){
+                accentedBeats[beatNumber-1] = 2;
+            } else if(!cb.checked){
+                accentedBeats[beatNumber-1] = 1;
+            }
+
+            console.log(accentedBeats);
+    })});
+}
+
 const tempoShown = document.getElementById("tempoOutput");
 const tempoInput = document.getElementById("tempoInput");
 //Defalut tempo at 120 BPM
@@ -159,28 +183,6 @@ measureInput.addEventListener("change", ()=>{
     }
     redoAccentedBeats();
 });
-
-function redoAccentedBeats(){
-    const checkboxesAccentedBeats = document.querySelectorAll('input[name=accentedBeats]');
-    checkboxesAccentedBeats.forEach((cb) => {
-        cb.addEventListener("change", () => {
-            const beatNumber = cb.value;
-            console.log(beatNumber);
-
-            if(beatNumber === 1){//First Beat
-                if(cb.checked === true){
-                accentedBeats[beatNumber] = 3;
-                } else{
-                    if(cb.checked === true){
-                    accentedBeats[beatNumber] = 2;
-                    } else if(cb.checked === false){
-                        accentedBeats[beatNumber] = 1;
-                    }
-                }
-            }
-    })});
-}
-
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
 tempoProgramingCheckBox.addEventListener("change", ()=>{
