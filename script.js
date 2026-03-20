@@ -21,7 +21,7 @@ node.buffer = buffer;
 node.start(0);*/
 
 //Function to Start/Stop the metronome
-
+const playButton = document.getElementById("playButton");
 playButton.addEventListener("click", () => {
     //On/Off
     playing = !playing;
@@ -207,7 +207,7 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
         submitBtn.textContent = "Submit";
         submitBtn.type="button";
         resetBtn.textContent = "Clear";
-        resetBtn.type = "reset"
+        resetBtn.type = "reset";
 ;
         tempoForm.appendChild(initialTempoLabel);
         tempoForm.appendChild(initialTempoInput);
