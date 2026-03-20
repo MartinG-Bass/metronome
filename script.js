@@ -79,15 +79,15 @@ function scheduleBeat(){
 }
 
 function setNextBeat(){
+    if(tempoPrograming){
+        updateTempo();
+    }
     nextBeatTime += 60/tempo;
     beatCounter++;
     if(beatCounter >  measure){
         beatCounter = 1;
     }
 
-    if(tempoPrograming){
-        updateTempo();
-    }
 }
 
 //We are gonna update the tempo every beat
@@ -108,6 +108,17 @@ function resetBeats(){
     beatCounter = 1;
     lastBeatAccented = 0;
     nextBeatTime = audioContext.currentTime + 0.1;
+}
+
+function resetAccentedBeats(){
+    //Clear previous array
+    accentedBeats.splice(0, accentedBeats.length);
+
+    //Create a new array
+    accentedBeats.push(3);
+    for(i=2;i<=measure;i++){
+        accentedBeats.push(1);
+    }
 }
 
 const tempoShown = document.getElementById("tempoOutput");
@@ -135,16 +146,40 @@ measureInput.addEventListener("change", ()=>{
 
         accentInput.type = "checkbox";
         accentInput.value = i;
+        accentInput.name = "accentedBeats";
+        //accentInput.id = ;
         accentLabel.textContent = i;
+        //accentLabel.for = ;
 
-        if(i==1){
+        if(i===1){
             accentInput.checked = true;
         }
         accentForm.appendChild(accentInput);
         accentForm.appendChild(accentLabel);
     }
+    redoAccentedBeats();
 });
 
+function redoAccentedBeats(){
+    const checkboxesAccentedBeats = document.querySelectorAll('input[name=accentedBeats]');
+    checkboxesAccentedBeats.forEach((cb) => {
+        cb.addEventListener("change", () => {
+            const beatNumber = cb.value;
+            console.log(beatNumber);
+
+            if(beatNumber === 1){//First Beat
+                if(cb.checked === true){
+                accentedBeats[beatNumber] = 3;
+                } else{
+                    if(cb.checked === true){
+                    accentedBeats[beatNumber] = 2;
+                    } else if(cb.checked === false){
+                        accentedBeats[beatNumber] = 1;
+                    }
+                }
+            }
+    })});
+}
 
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
