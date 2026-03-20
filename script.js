@@ -144,18 +144,25 @@ tempoInput.addEventListener("input", (e) => {
     tempo = e.target.value;
 });
 
+const accentForm = document.getElementById("accents");
 const measureInput = document.getElementById("measure");
 measureInput.addEventListener("change", ()=>{
     measure = Number(measureInput.value);
-    console.log("Measure:",measure);
+    while(accentForm.lastChild){
+        accentForm.removeChild(accentForm.lastChild);
+    }
+    for(i=1; i<=measure; i++){
+        const accentInput = document.createElement("input");
+        const accentLabel = document.createElement("label");
+        accentInput.type = "checkbox";
+        accentInput.value = i;
+        accentLabel.textContent = i;
+        accentForm.appendChild(accentInput);
+        accentForm.appendChild(accentLabel);
+    }
 });
 
-document.querySelectorAll('input[name="accentBeat"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    accentEveryBeat = Number(radio.value);
-    console.log('accentEveryBeat:', accentEveryBeat);
-  });
-});  
+
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
 tempoProgramingCheckBox.addEventListener("change", ()=>{
