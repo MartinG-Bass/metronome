@@ -8,12 +8,12 @@
 </head>
 <body>
     <button id="playButton">Start</button>
-    <form action="">
-        <input type="number" id="inputTempo">
-        <button type="button" id="submitTempo">
-            Submit Tempo
-        </button>
-    </form>
+
+    <p>
+        <input type="range" id="tempoInput" min="1" max="350">
+        <span id="tempoOutput"></span><span> BPM</span>
+    </p>
+
     <p>
         Measure
        <select name="Measures" id="measure">

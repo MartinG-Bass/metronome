@@ -130,12 +130,13 @@ function resetBeats(){
     nextBeatTime = audioContext.currentTime + 0.1;
 }
 
-const submitTempoBtn = document.getElementById("submitTempo");
-submitTempoBtn.addEventListener("click", () => {
-    const inputTempo = document.getElementById("inputTempo");
-    tempo = inputTempo.value;
-    inputTempo.value = "";
-    resetBeats();
+const tempoShown = document.getElementById("tempoOutput");
+const tempoInput = document.getElementById("tempoInput");
+//Defalut tempo at 120 BPM
+tempoInput.value = tempoShown.textContent = 120;
+
+tempoInput.addEventListener("input", (e) => {
+    tempoShown.textContent = e.target.value;
 });
 
 const measureInput = document.getElementById("measure");
