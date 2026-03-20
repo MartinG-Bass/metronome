@@ -7,8 +7,7 @@ let playing = false;
 let nextBeatTime = 0;
 let playMetronome = null;
 let beatCounter = 1;
-let lastBeatAccented = 0;
-let accentEveryBeat = 0;
+let accentedBeats = [];
 let tempoPrograming = false;
 let initialTempo = tempo;
 let finalTempo = tempo;
@@ -49,32 +48,34 @@ function scheduler(){
     }
 }
 
+/*Tag for accented beats:
+    0 - Skipped (Not Sounding) 
+    1 - Normal Beat
+    2 - Accented Beat
+    3 - High Pitch Beat (Only for the 1 by now)
+*/
 function scheduleBeat(){
-    if(skipBeat()){
+    const beatTag = accentedBeats[beatCounter];
+    
+    if(beatTag === 0){//Skipped Beat
         return;
     }
 
     //Create the note
     const osc = audioContext.createOscillator();
     osc.connect(audioContext.destination);
-    if(beatCounter === 1){
-        osc.frequency.value = 880.0;
-    } else if(accentBeat()){
+    if(beatTag === 1){
+        //Normal Beat
+        osc.frequency.value = 440.0;
+    } else if(beatTag === 2){ 
+        //Accented Beat
         osc.frequency.value = 660.0;
     } else{
-        osc.frequency.value = 440.0;
+        //High pitch beat
+        osc.frequency.value = 880.0;
     }
     osc.start(nextBeatTime);
     osc.stop(nextBeatTime+noteLength);
-}
-
-function skipBeat(){
-    /*//Now for the debug part we are gonna skip every 3rd beat
-    if(beatCounter%3==0){
-        return true;
-    } else{
-        return false;
-    }*/
 }
 
 function setNextBeat(){
@@ -87,29 +88,6 @@ function setNextBeat(){
     if(tempoPrograming){
         updateTempo();
     }
-}
-
-function accentBeat(){
-    if(accentEveryBeat === 0){
-        return false;
-    } 
-    
-    let beatsSinceLastAccented;
-    if(beatCounter > lastBeatAccented){
-        beatsSinceLastAccented = beatCounter-lastBeatAccented;
-    } else if(lastBeatAccented >= beatCounter){
-        beatsSinceLastAccented = beatCounter + measure - lastBeatAccented;
-    }
-    
-
-    if(beatsSinceLastAccented%accentEveryBeat == 0){
-        lastBeatAccented = beatCounter;
-        return true;
-    } else{
-        return false;
-    }
-
-    
 }
 
 //We are gonna update the tempo every beat
@@ -151,12 +129,17 @@ measureInput.addEventListener("change", ()=>{
     while(accentForm.lastChild){
         accentForm.removeChild(accentForm.lastChild);
     }
-    for(i=1; i<=measure; i++){
+    for(let i=1; i<=measure; i++){
         const accentInput = document.createElement("input");
         const accentLabel = document.createElement("label");
+
         accentInput.type = "checkbox";
         accentInput.value = i;
         accentLabel.textContent = i;
+
+        if(i==1){
+            accentInput.checked = true;
+        }
         accentForm.appendChild(accentInput);
         accentForm.appendChild(accentLabel);
     }
