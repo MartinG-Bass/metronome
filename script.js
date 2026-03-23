@@ -29,6 +29,7 @@ playButton.addEventListener("click", () => {
     //On
     if(playing){
         playButton.textContent = "Stop";
+        drawBeats();
         nextBeatTime = audioContext.currentTime + 0.1;
         playMetronome = setInterval(scheduler, 100);
     } else{ //Off
@@ -117,7 +118,6 @@ function resetBeats(){
     beatCounter = 1;
     lastBeatAccented = 0;
     nextBeatTime = audioContext.currentTime + 0.1;
-    drawBeats();
 }
 
 function resetAccentedBeats(){
