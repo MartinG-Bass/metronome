@@ -46,6 +46,7 @@ function _init_(){
     redoSkippedBeats();
     resetAccentedBeats();
     drawBeats();
+    updateBeat();
 }
 
 function scheduler(){
@@ -64,6 +65,8 @@ function scheduler(){
 function scheduleBeat(){
     const beatTag = accentedBeats[beatCounter-1];
     
+    updateBeat();
+
     if(beatTag === 0){//Skipped Beat
         return;
     }
@@ -283,6 +286,17 @@ function drawBeats(){
         const beatDiv = document.createElement("div");
         beatDiv.classList.add("beat",i);
         beatContainer.appendChild(beatDiv);
+    }
+}
+
+function updateBeat(){
+    const drawedBeats = document.querySelectorAll(".beat");
+    if(beatCounter === 1){
+        drawedBeats[beatCounter-1].style.backgroundColor = "red";
+        drawedBeats[measure-1].style.backgroundColor = "black";
+    } else{
+        drawedBeats[beatCounter-1].style.backgroundColor = "blue";
+        drawedBeats[beatCounter-2].style.backgroundColor = "black";
     }
 }
 
