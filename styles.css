@@ -1,0 +1,27 @@
+#container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    gap: 50px;
+}
+
+#head, #body{
+    background-color: bisque;
+    padding: 30px;
+    border: 1px orange solid;
+    border-radius: 5px;
+    width: 90%;
+}
+
+button{
+    background-color: rgb(58, 150, 255);
+    color: rgb(227, 216, 195);
+    border: 1px rgb(237, 186, 152) solid;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+#playButton{
+    font-size: 1.5rem;
+}
