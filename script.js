@@ -41,12 +41,11 @@ playButton.addEventListener("click", () => {
 
 }); 
 
-function _init_(){
+function init(){
     redoAccentedBeats();
     redoSkippedBeats();
     resetAccentedBeats();
     drawBeats();
-    updateBeat();
 }
 
 function scheduler(){
@@ -118,6 +117,7 @@ function resetBeats(){
     beatCounter = 1;
     lastBeatAccented = 0;
     nextBeatTime = audioContext.currentTime + 0.1;
+    drawBeats();
 }
 
 function resetAccentedBeats(){
@@ -287,6 +287,7 @@ function drawBeats(){
         beatDiv.classList.add("beat",i);
         beatContainer.appendChild(beatDiv);
     }
+    updateBeat();
 }
 
 function updateBeat(){
@@ -300,4 +301,4 @@ function updateBeat(){
     }
 }
 
-_init_();
+window.addEventListener("load", init );
