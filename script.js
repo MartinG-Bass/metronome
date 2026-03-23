@@ -20,8 +20,6 @@ var node = audioContext.createBufferSource();
 node.buffer = buffer;
 node.start(0);*/
 
-_init_();
-
 //Function to Start/Stop the metronome
 const playButton = document.getElementById("playButton");
 playButton.addEventListener("click", () => {
@@ -47,6 +45,7 @@ function _init_(){
     redoAccentedBeats();
     redoSkippedBeats();
     resetAccentedBeats();
+    drawBeats();
 }
 
 function scheduler(){
@@ -130,7 +129,27 @@ function resetAccentedBeats(){
     console.log(accentedBeats);
 }
 
+const accentForm = document.getElementById("accents");
 function redoAccentedBeats(){
+    while(accentForm.lastChild){
+        accentForm.removeChild(accentForm.lastChild);
+    }
+    for(let i=1; i<=measure;i++){
+        const accentInput = document.createElement("input");
+        const accentLabel = document.createElement("label");
+
+        accentInput.type = "checkbox";
+        accentInput.value = i;
+        accentInput.name = "accentedBeats";
+        accentLabel.textContent = i;
+
+        if(i===1){
+            accentInput.checked = true;
+        }
+
+        accentForm.appendChild(accentInput);
+        accentForm.appendChild(accentLabel);
+    }
     const checkboxesAccentedBeats = document.querySelectorAll('input[name=accentedBeats]');
     checkboxesAccentedBeats.forEach((cb) => {
         cb.addEventListener("change", () => {
@@ -147,7 +166,25 @@ function redoAccentedBeats(){
     })});
 }
 
+const skipForm = document.getElementById("skips");
 function redoSkippedBeats(){
+    while(skipForm.lastChild){
+        skipForm.removeChild(skipForm.lastChild);
+    }
+    for(let i=1; i<=measure; i++){
+        
+        const skipInput = document.createElement("input");
+        const skipLabel = document.createElement("label");
+
+        skipInput.type = "checkbox";
+        skipInput.value = i;
+        skipInput.name = "skippedBeats";
+        skipLabel.textContent = i;
+
+        skipForm.appendChild(skipInput);
+        skipForm.appendChild(skipLabel);
+    }
+    
     const checkboxesSkippedBeats = document.querySelectorAll('input[name=skippedBeats]');
     checkboxesSkippedBeats.forEach((cb) => {
         cb.addEventListener("change", () => {
@@ -174,46 +211,14 @@ tempoInput.addEventListener("input", (e) => {
     tempo = e.target.value;
 });
 
-const accentForm = document.getElementById("accents");
-const skipForm = document.getElementById("skips");
 const measureInput = document.getElementById("measure");
 measureInput.addEventListener("change", ()=>{
     measure = Number(measureInput.value);
-    while(accentForm.lastChild){
-        accentForm.removeChild(accentForm.lastChild);
-    }
-    while(skipForm.lastChild){
-        skipForm.removeChild(skipForm.lastChild);
-    }
-    for(let i=1; i<=measure; i++){
-        const accentInput = document.createElement("input");
-        const accentLabel = document.createElement("label");
-        const skipInput = document.createElement("input");
-        const skipLabel = document.createElement("label");
 
-        accentInput.type = "checkbox";
-        accentInput.value = i;
-        accentInput.name = "accentedBeats";
-        accentLabel.textContent = i;
-
-        skipInput.type = "checkbox";
-        skipInput.value = i;
-        skipInput.name = "skippedBeats";
-        skipLabel.textContent = i;
-        
-
-        if(i===1){
-            accentInput.checked = true;
-        }
-        accentForm.appendChild(accentInput);
-        accentForm.appendChild(accentLabel);
-
-        skipForm.appendChild(skipInput);
-        skipForm.appendChild(skipLabel);
-    }
     redoAccentedBeats();
     redoSkippedBeats();
     resetAccentedBeats();
+    drawBeats();
 });
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
@@ -267,3 +272,18 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
         tempoProgramingContainer.removeChild(tempoProgramingContainer.lastChild);
     }
 });
+
+const beatContainer = document.getElementById("beatContainer");
+function drawBeats(){
+    //Reset the drawing
+    while(beatContainer.lastChild){
+        beatContainer.removeChild(beatContainer.lastChild);
+    }
+    for(let i=1; i<=measure; i++){
+        const beatDiv = document.createElement("div");
+        beatDiv.classList.add("beat",i);
+        beatContainer.appendChild(beatDiv);
+    }
+}
+
+_init_();
