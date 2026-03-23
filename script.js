@@ -45,6 +45,7 @@ playButton.addEventListener("click", () => {
 
 function _init_(){
     redoAccentedBeats();
+    redoSkippedBeats();
     resetAccentedBeats();
 }
 
@@ -126,6 +127,7 @@ function resetAccentedBeats(){
     for(i=2;i<=measure;i++){
         accentedBeats.push(1);
     }
+    console.log(accentedBeats);
 }
 
 function redoAccentedBeats(){
@@ -137,6 +139,21 @@ function redoAccentedBeats(){
                 accentedBeats[beatNumber-1] = 3;  
             } else if(cb.checked){
                 accentedBeats[beatNumber-1] = 2;
+            } else if(!cb.checked){
+                accentedBeats[beatNumber-1] = 1;
+            }
+
+            console.log(accentedBeats);
+    })});
+}
+
+function redoSkippedBeats(){
+    const checkboxesSkippedBeats = document.querySelectorAll('input[name=skippedBeats]');
+    checkboxesSkippedBeats.forEach((cb) => {
+        cb.addEventListener("change", () => {
+            const beatNumber = Number(cb.value);
+            if(cb.checked === true){
+                accentedBeats[beatNumber-1] = 0;  
             } else if(!cb.checked){
                 accentedBeats[beatNumber-1] = 1;
             }
@@ -158,30 +175,45 @@ tempoInput.addEventListener("input", (e) => {
 });
 
 const accentForm = document.getElementById("accents");
+const skipForm = document.getElementById("skips");
 const measureInput = document.getElementById("measure");
 measureInput.addEventListener("change", ()=>{
     measure = Number(measureInput.value);
     while(accentForm.lastChild){
         accentForm.removeChild(accentForm.lastChild);
     }
+    while(skipForm.lastChild){
+        skipForm.removeChild(skipForm.lastChild);
+    }
     for(let i=1; i<=measure; i++){
         const accentInput = document.createElement("input");
         const accentLabel = document.createElement("label");
+        const skipInput = document.createElement("input");
+        const skipLabel = document.createElement("label");
 
         accentInput.type = "checkbox";
         accentInput.value = i;
         accentInput.name = "accentedBeats";
-        //accentInput.id = ;
         accentLabel.textContent = i;
-        //accentLabel.for = ;
+
+        skipInput.type = "checkbox";
+        skipInput.value = i;
+        skipInput.name = "skippedBeats";
+        skipLabel.textContent = i;
+        
 
         if(i===1){
             accentInput.checked = true;
         }
         accentForm.appendChild(accentInput);
         accentForm.appendChild(accentLabel);
+
+        skipForm.appendChild(skipInput);
+        skipForm.appendChild(skipLabel);
     }
     redoAccentedBeats();
+    redoSkippedBeats();
+    resetAccentedBeats();
 });
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
