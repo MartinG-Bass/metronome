@@ -296,7 +296,7 @@ function drawBeats(){
 window.requestAnimFrame = window.requestAnimationFrame;
 function updateBeat(){
     const drawedBeats = document.querySelectorAll(".beat");
-    while(nextBeatTime>audioContext.currentTime){
+    while(nextBeatTime>audioContext.currentTime && tempo < 230){
 
     }
     if(beatCounter === 1){
