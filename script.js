@@ -13,6 +13,8 @@ let initialTempo = tempo;
 let finalTempo = tempo;
 let numberOfMeasures = 0;
 let measure = 4;
+let lastNoteDrawn = 1;
+let notesInQueue = [];
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -64,8 +66,6 @@ function scheduler(){
 */
 function scheduleBeat(){
     const beatTag = accentedBeats[beatCounter-1];
-    
-    updateBeat();
 
     if(beatTag === 0){//Skipped Beat
         return;
@@ -86,6 +86,7 @@ function scheduleBeat(){
     }
     osc.start(nextBeatTime);
     osc.stop(nextBeatTime+noteLength);
+    updateBeat();
 }
 
 function setNextBeat(){
@@ -287,11 +288,17 @@ function drawBeats(){
         beatDiv.classList.add("beat",i);
         beatContainer.appendChild(beatDiv);
     }
+
+    nextBeatTime = 0;
     updateBeat();
 }
 
+window.requestAnimFrame = window.requestAnimationFrame;
 function updateBeat(){
     const drawedBeats = document.querySelectorAll(".beat");
+    /*while(nextBeatTime<audioContext.currentTime){
+
+    }*/
     if(beatCounter === 1){
         drawedBeats[beatCounter-1].style.backgroundColor = "red";
         drawedBeats[measure-1].style.backgroundColor = "black";
