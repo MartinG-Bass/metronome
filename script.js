@@ -296,9 +296,9 @@ function drawBeats(){
 window.requestAnimFrame = window.requestAnimationFrame;
 function updateBeat(){
     const drawedBeats = document.querySelectorAll(".beat");
-    /*while(nextBeatTime<audioContext.currentTime){
+    while(nextBeatTime>audioContext.currentTime){
 
-    }*/
+    }
     if(beatCounter === 1){
         drawedBeats[beatCounter-1].style.backgroundColor = "red";
         drawedBeats[measure-1].style.backgroundColor = "black";
