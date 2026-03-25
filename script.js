@@ -310,12 +310,29 @@ function createInputBeats(){
     }
 
     const beatInputs = document.querySelectorAll(`input[list="beatInput"]`);
-    beatInputs.forEach((input)=>{input.addEventListener("change",(item)=>{
+    beatInputs.forEach((input)=>{input.addEventListener("change",()=>{
         const beatNumber = Number(input.className);
         const tag = Number(input.value);
 
         //Update accent array
         accentedBeats[beatNumber-1] = tag;
+
+        //Visual Representation
+        switch(tag){
+            case 0:
+                input.style.backgroundColor = "white";
+                break;
+            case 1:
+                input.style.backgroundColor = "blue";
+                break;
+            case 2:
+                input.style.backgroundColor = "yellow";
+                break;
+            case 3:
+                input.style.backgroundColor = "red";
+                break;
+            default:
+        }
         console.log(accentedBeats);
     })});
 }
