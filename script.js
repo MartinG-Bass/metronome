@@ -131,7 +131,6 @@ function resetAccentedBeats(){
     for(i=2;i<=measure;i++){
         accentedBeats.push(1);
     }
-    console.log(accentedBeats);
 }
 
 const accentForm = document.getElementById("accents");
@@ -166,8 +165,6 @@ function redoAccentedBeats(){
             } else if(!cb.checked){
                 accentedBeats[beatNumber-1] = 1;
             }
-
-            console.log(accentedBeats);
     })});
 }
 
@@ -312,6 +309,15 @@ function createInputBeats(){
         beatInputContainer.appendChild(beatInput);
     }
 
+    const beatInputs = document.querySelectorAll(`input[list="beatInput"]`);
+    beatInputs.forEach((input)=>{input.addEventListener("change",(item)=>{
+        const beatNumber = Number(input.className);
+        const tag = Number(input.value);
+
+        //Update accent array
+        accentedBeats[beatNumber-1] = tag;
+        console.log(accentedBeats);
+    })});
 }
 
 window.requestAnimFrame = window.requestAnimationFrame;
