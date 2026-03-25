@@ -49,6 +49,7 @@ function init(){
     redoSkippedBeats();
     resetAccentedBeats();
     drawBeats();
+    createInputBeats();
 }
 
 function scheduler(){
@@ -223,6 +224,7 @@ measureInput.addEventListener("change", ()=>{
     redoSkippedBeats();
     resetAccentedBeats();
     drawBeats();
+    createInputBeats();
 });
 
 const tempoProgramingCheckBox = document.getElementById("tempoPrograming");
@@ -283,6 +285,8 @@ function drawBeats(){
     while(beatContainer.lastChild){
         beatContainer.removeChild(beatContainer.lastChild);
     }
+
+    //Draw new beats
     for(let i=1; i<=measure; i++){
         const beatDiv = document.createElement("div");
         beatDiv.classList.add("beat",i);
@@ -291,6 +295,23 @@ function drawBeats(){
 
     nextBeatTime = 0;
     updateBeat();
+}
+
+const beatInputContainer = document.getElementById("beatInputContainer");
+function createInputBeats(){
+    //Reset the inputs
+    while(beatInputContainer.lastChild){
+        beatInputContainer.removeChild(beatInputContainer.lastChild);
+    }
+
+    //Create the new inputs
+    for(let i=1; i<=measure; i++){
+        const beatInput = document.createElement("input");
+        beatInput.setAttribute("list", "beatInput");
+        beatInput.classList.add(i);
+        beatInputContainer.appendChild(beatInput);
+    }
+
 }
 
 window.requestAnimFrame = window.requestAnimationFrame;
