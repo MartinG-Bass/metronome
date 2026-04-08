@@ -301,15 +301,37 @@ function createInputBeats(){
         beatInputContainer.removeChild(beatInputContainer.lastChild);
     }
 
+    const arrayOfTagsAndBeats = ["Mute", "Normal", "Accented", "High-pitch"];
     //Create the new inputs
     for(let i=1; i<=measure; i++){
-        const beatInput = document.createElement("input");
-        beatInput.setAttribute("list", "beatInput");
+        const beatInput = document.createElement("select");
+        beatInput.setAttribute("name", "beatInput");
+        beatInput.setAttribute("multiple",4);
         beatInput.classList.add(i);
+
+        for(let j=0; j<arrayOfTagsAndBeats.length; j++){
+            const option = document.createElement("option");
+            option.value = j;
+            option.textContent = arrayOfTagsAndBeats[j];
+            if(i===1 && j===3){
+                option.selected=true;
+            } else if(i!==1 && j===1){
+                option.selected=true;
+            }
+            beatInput.appendChild(option);
+        }
+
+        if(i===1){
+            beatInput.style.backgroundColor = "red";
+        } else{
+            beatInput.style.backgroundColor = "blue";
+        }
+        
+
         beatInputContainer.appendChild(beatInput);
     }
 
-    const beatInputs = document.querySelectorAll(`input[list="beatInput"]`);
+    const beatInputs = document.querySelectorAll(`select[name="beatInput"]`);
     beatInputs.forEach((input)=>{input.addEventListener("change",()=>{
         const beatNumber = Number(input.className);
         const tag = Number(input.value);
