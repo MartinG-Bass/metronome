@@ -101,6 +101,11 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
     }
 });
 
+const addMetronomeButton = document.getElementById("addMetronome");
+addMetronomeButton.addEventListener("click", () => {
+    
+});
+
 function Metronome(){
     let playing = false;
     let playMetronome = null;
@@ -303,7 +308,6 @@ function Metronome(){
     resetAccentedBeats();
     drawBeats();
     createInputBeats();
-    console.log("Debug");
 
 }
 

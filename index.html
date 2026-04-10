@@ -9,13 +9,21 @@
 <body>
     <div id="container">
         <div id="head">
-            <button id="playButton">Start</button>
-            <input type="range" id="tempoInput" min="1" max="350">
-            <span id="tempoOutput"></span><span> BPM</span>
-            <p id="tempoProgramingContainer">
-                <input type="checkbox" id="tempoPrograming">
-                <label for="tempoPrograming">Tempo Programing</label>
-            </p>
+            <div class="playButton&Tempo">
+                <button id="playButton">Start</button>
+                <input type="range" id="tempoInput" min="1" max="350">
+                <span id="tempoOutput"></span><span> BPM</span>
+                
+                <p id="tempoProgramingContainer">
+                    <input type="checkbox" id="tempoPrograming">
+                    <label for="tempoPrograming">Tempo Programing</label>
+                </p>
+            </div>
+
+            <div class="addMetronomeButton">
+                <button id="addMetronome">Add Metronome</button>
+            </div>
+            
         </div>
         
         <div id="bodyMetronome">
