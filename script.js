@@ -110,6 +110,15 @@ addMetronomeButton.addEventListener("click", () => {
     metronomeContainer.classList.add(numberOfMetronomes);
     metronomeContainer.id = "metronome";
     body.appendChild(metronomeContainer);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.addEventListener("click", () => {
+        body.removeChild(metronomeContainer);
+        numberOfMetronomes--;
+    });
+    metronomeContainer.appendChild(deleteBtn);
+    deleteBtn.textContent = "-";
+     
 });
 
 function Metronome(){
