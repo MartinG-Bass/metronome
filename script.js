@@ -15,6 +15,7 @@ let numberOfMeasures = 0;
 //let measure = 4;
 let lastNoteDrawn = 1;
 let notesInQueue = [];
+let numberOfMetronomes = 1;
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -103,7 +104,12 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
 
 const addMetronomeButton = document.getElementById("addMetronome");
 addMetronomeButton.addEventListener("click", () => {
-    
+    const body = document.getElementById("body");
+    const metronomeContainer = document.createElement("div");
+    numberOfMetronomes++;
+    metronomeContainer.classList.add(numberOfMetronomes);
+    metronomeContainer.id = "metronome";
+    body.appendChild(metronomeContainer);
 });
 
 function Metronome(){
