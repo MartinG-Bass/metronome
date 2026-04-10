@@ -241,7 +241,9 @@ function Metronome(){
     const metronomeContainer = document.getElementById("metronome"+numberOfMetronomes);
     metronomeContainer.appendChild(measureInput);
 
-    const beatContainer = document.getElementById("beatContainer");
+    const beatContainer = document.createElement("div");
+    beatContainer.classList.add("beatContainer");
+    metronomeContainer.appendChild(beatContainer);
     function drawBeats(){
         //Reset the drawing
         while(beatContainer.lastChild){
@@ -259,7 +261,9 @@ function Metronome(){
         updateBeat();
     }
 
-    const beatInputContainer = document.getElementById("beatInputContainer");
+    const beatInputContainer = document.createElement("div");
+    beatInputContainer.classList.add("beatInputContainer");
+    metronomeContainer.appendChild(beatInputContainer);
     function createInputBeats(){
         //Reset the inputs
         while(beatInputContainer.lastChild){
