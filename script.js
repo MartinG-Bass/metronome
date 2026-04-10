@@ -16,6 +16,7 @@ let numberOfMeasures = 0;
 let lastNoteDrawn = 1;
 let notesInQueue = [];
 let numberOfMetronomes = 1;
+let metronomeArray = [];
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -108,16 +109,20 @@ addMetronomeButton.addEventListener("click", () => {
     const metronomeContainer = document.createElement("div");
     numberOfMetronomes++;
     metronomeContainer.classList.add(numberOfMetronomes);
-    metronomeContainer.id = "metronome";
+    metronomeContainer.id = "metronome"+numberOfMetronomes;
     body.appendChild(metronomeContainer);
 
+    //Button to remove the new metronome
     const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "-";
+    metronomeContainer.appendChild(deleteBtn);
     deleteBtn.addEventListener("click", () => {
         body.removeChild(metronomeContainer);
         numberOfMetronomes--;
     });
-    metronomeContainer.appendChild(deleteBtn);
-    deleteBtn.textContent = "-";
+    
+    //Create the new metronome
+    metronomeArray.push(new Metronome());
      
 });
 
@@ -212,7 +217,20 @@ function Metronome(){
         }
     }
 
-    const measureInput = document.getElementById("measure");
+    const measureInput = document.createElement("select");
+    measureInput.setAttribute("name", "Measures");
+    measureInput.classList.add("measure");
+
+    for(let j=1; j<=16; j++){
+        const option = document.createElement("option");
+        option.value = j;
+        option.textContent = j + "/4";
+        if(j===4){
+            option.selected=true;
+        }
+        measureInput.appendChild(option);
+    }
+
     measureInput.addEventListener("change", ()=>{
         measure = Number(measureInput.value);
 
@@ -220,6 +238,8 @@ function Metronome(){
         drawBeats();
         createInputBeats();
     });
+    const metronomeContainer = document.getElementById("metronome"+numberOfMetronomes);
+    metronomeContainer.appendChild(measureInput);
 
     const beatContainer = document.getElementById("beatContainer");
     function drawBeats(){
@@ -327,7 +347,7 @@ function Metronome(){
 }
 
  
-const metronome1 = new Metronome();
+metronomeArray.push(new Metronome());
 
 
 //window.addEventListener("load", init );
