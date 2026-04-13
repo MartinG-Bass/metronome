@@ -13,8 +13,8 @@ let initialTempo = tempo;
 let finalTempo = tempo;
 let numberOfMeasures = 0;
 //let measure = 4;
-let lastNoteDrawn = 1;
-let notesInQueue = [];
+//let lastNoteDrawn = 1;
+//let notesInQueue = [];
 let numberOfMetronomes = 1;
 let metronomeArray = [];
 /* Not needed for now, maybe in the future
@@ -49,7 +49,7 @@ tempoInput.addEventListener("input", (e) => {
     tempoShown.textContent = e.target.value;
     tempo = e.target.value;
     metronomeArray.forEach((metronome) =>{
-        metronome.internalTempo = tempo*metronome.measure/metronomeArray[0].measure;
+        metronome.internalTempo = tempo*metronome.getMeasure()/metronomeArray[0].getMeasure();
         console.log(metronome.internalTempo);
     });
 });
@@ -138,14 +138,9 @@ function Metronome(){
     let measure = 4;
     let accentedBeats = [];
     let nextBeatTime = 0;
+    let lastNoteDrawn = 1;
+    let notesInQueue = [];
     let internalTempo;
-
-    if(!metronomeArray[0]){
-        internalTempo = tempo;
-    } else{
-        internalTempo = tempo*measure/(metronomeArray[0].getMeasure());
-    }
-    console.log(internalTempo);
     
     //Function to Start/Stop the metronome
     const playButton = document.getElementById("playButton");
@@ -167,6 +162,14 @@ function Metronome(){
         }
     }); 
     
+    this.updateInternalTempo = function(){
+        if(!metronomeArray[0]){
+            internalTempo = tempo;
+        } else{
+            internalTempo = tempo*measure/(metronomeArray[0].getMeasure());
+        }
+    }
+
     function scheduler(){
         while(nextBeatTime < audioContext.currentTime + lookAheadTime){
             scheduleBeat();
@@ -206,7 +209,7 @@ function Metronome(){
     }
     
     function setNextBeat(){
-        nextBeatTime += 60/tempo;
+        nextBeatTime += 60/internalTempo;
         beatCounter++;
         if(beatCounter >  measure){
             beatCounter = 1;
@@ -246,11 +249,12 @@ function Metronome(){
 
     measureInput.addEventListener("change", ()=>{
         measure = Number(measureInput.value);
-
+        updateAllInternalTempos();
         resetAccentedBeats();
         drawBeats();
         createInputBeats();
     });
+
     const flexDiv = document.getElementById("metronome"+numberOfMetronomes);
     const metronomeContainer = document.createElement("div");
     flexDiv.appendChild(metronomeContainer);
@@ -258,6 +262,7 @@ function Metronome(){
 
     const beatContainer = document.createElement("div");
     beatContainer.classList.add("beatContainer");
+    beatContainer.classList.add(numberOfMetronomes);
     metronomeContainer.appendChild(beatContainer);
     function drawBeats(){
         //Reset the drawing
@@ -269,6 +274,7 @@ function Metronome(){
         for(let i=1; i<=measure; i++){
             const beatDiv = document.createElement("div");
             beatDiv.classList.add("beat",i);
+            beatDiv.classList.add("beatMetronome"+numberOfMetronomes);
             beatContainer.appendChild(beatDiv);
         }
 
@@ -344,10 +350,8 @@ function Metronome(){
     }
 
     function updateBeat(){
-        const drawedBeats = document.querySelectorAll(".beat");
-        while(nextBeatTime>audioContext.currentTime && tempo < 230){
-
-        }
+        const drawedBeats = document.querySelectorAll(".beatMetronome"+numberOfMetronomes);
+    
         if(beatCounter === 1){
             drawedBeats[beatCounter-1].style.backgroundColor = "red";
             drawedBeats[measure-1].style.backgroundColor = "black";
@@ -358,14 +362,17 @@ function Metronome(){
     }
 
     this.getMeasure = function (){ return measure;}
-
         
     resetAccentedBeats();
     drawBeats();
     createInputBeats();
+    this.updateInternalTempo();
 
 }
 
+function updateAllInternalTempos(){
+    metronomeArray.forEach((metronome)=>{metronome.updateInternalTempo()});
+}
  
 metronomeArray.push(new Metronome());
 
