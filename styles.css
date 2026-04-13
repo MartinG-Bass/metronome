@@ -14,6 +14,12 @@
     width: 90%;
 }
 
+#body{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 #head{
     display: flex;
     justify-content: space-between;
@@ -24,6 +30,14 @@
     padding: 30px;
     border-radius: 5px;
     border: 1px rgb(0, 170, 255) solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.removable button{
+    align-self: end;
+    width: 30px;
 }
 
 button{

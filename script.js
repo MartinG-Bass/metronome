@@ -108,7 +108,8 @@ addMetronomeButton.addEventListener("click", () => {
     const body = document.getElementById("body");
     const metronomeContainer = document.createElement("div");
     numberOfMetronomes++;
-    metronomeContainer.classList.add(numberOfMetronomes);
+    metronomeContainer.classList.add("metronome");
+    metronomeContainer.classList.add("removable");
     metronomeContainer.id = "metronome"+numberOfMetronomes;
     body.appendChild(metronomeContainer);
 
@@ -238,7 +239,9 @@ function Metronome(){
         drawBeats();
         createInputBeats();
     });
-    const metronomeContainer = document.getElementById("metronome"+numberOfMetronomes);
+    const flexDiv = document.getElementById("metronome"+numberOfMetronomes);
+    const metronomeContainer = document.createElement("div");
+    flexDiv.appendChild(metronomeContainer);
     metronomeContainer.appendChild(measureInput);
 
     const beatContainer = document.createElement("div");
