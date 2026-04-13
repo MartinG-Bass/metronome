@@ -48,6 +48,10 @@ tempoShown.textContent = tempo;
 tempoInput.addEventListener("input", (e) => {
     tempoShown.textContent = e.target.value;
     tempo = e.target.value;
+    metronomeArray.forEach((metronome) =>{
+        metronome.internalTempo = tempo*metronome.measure/metronomeArray[0].measure;
+        console.log(metronome.internalTempo);
+    });
 });
 
 
@@ -134,6 +138,14 @@ function Metronome(){
     let measure = 4;
     let accentedBeats = [];
     let nextBeatTime = 0;
+    let internalTempo;
+
+    if(!metronomeArray[0]){
+        internalTempo = tempo;
+    } else{
+        internalTempo = tempo*measure/(metronomeArray[0].getMeasure());
+    }
+    console.log(internalTempo);
     
     //Function to Start/Stop the metronome
     const playButton = document.getElementById("playButton");
@@ -345,6 +357,7 @@ function Metronome(){
         }
     }
 
+    this.getMeasure = function (){ return measure;}
 
         
     resetAccentedBeats();
