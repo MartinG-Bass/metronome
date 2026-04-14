@@ -140,6 +140,7 @@ function Metronome(){
     let lastNoteDrawn = 1;
     let notesInQueue = [];
     let internalTempo;
+    let drawedBeats = [];
     
     //Function to Start/Stop the metronome
     const playButton = document.getElementById("playButton");
@@ -184,7 +185,7 @@ function Metronome(){
     */
     function scheduleBeat(){
         const beatTag = accentedBeats[beatCounter-1];
-
+        updateBeat();
         if(beatTag === 0){//Skipped Beat
             return;
         }
@@ -204,7 +205,7 @@ function Metronome(){
         }
         osc.start(nextBeatTime);
         osc.stop(nextBeatTime+noteLength);
-        updateBeat();
+        
     }
     
     function setNextBeat(){
@@ -268,16 +269,19 @@ function Metronome(){
         while(beatContainer.lastChild){
             beatContainer.removeChild(beatContainer.lastChild);
         }
+        drawedBeats.splice(0, drawedBeats.length);
 
         //Draw new beats
         for(let i=1; i<=measure; i++){
             const beatDiv = document.createElement("div");
             beatDiv.classList.add("beat",i);
             beatDiv.classList.add("beatMetronome"+numberOfMetronomes);
+            drawedBeats.push(beatDiv);
             beatContainer.appendChild(beatDiv);
         }
 
         nextBeatTime = 0;
+    
         updateBeat();
     }
 
@@ -348,10 +352,8 @@ function Metronome(){
             console.log(accentedBeats);
         })});
     }
-
-    function updateBeat(){
-        const drawedBeats = document.querySelectorAll(".beatMetronome"+numberOfMetronomes);
     
+    function updateBeat(){
         if(beatCounter === 1){
             drawedBeats[beatCounter-1].style.backgroundColor = "red";
             drawedBeats[measure-1].style.backgroundColor = "black";
@@ -359,6 +361,7 @@ function Metronome(){
             drawedBeats[beatCounter-1].style.backgroundColor = "blue";
             drawedBeats[beatCounter-2].style.backgroundColor = "black";
         }
+        console.log(drawedBeats[1].className);
     }
 
     this.getMeasure = function (){ return measure;}
