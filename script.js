@@ -298,6 +298,7 @@ function Metronome(){
             beatInput.setAttribute("name", "beatInput");
             beatInput.setAttribute("multiple",4);
             beatInput.classList.add(i);
+            beatInput.classList.add("metronome"+numberOfMetronomes);
 
             for(let j=0; j<arrayOfTagsAndBeats.length; j++){
                 const option = document.createElement("option");
@@ -321,9 +322,10 @@ function Metronome(){
             beatInputContainer.appendChild(beatInput);
         }
 
-        const beatInputs = document.querySelectorAll(`select[name="beatInput"]`);
+        const beatInputs = document.querySelectorAll(`select[name="beatInput"].metronome`+numberOfMetronomes);
         beatInputs.forEach((input)=>{input.addEventListener("change",()=>{
-            const beatNumber = Number(input.className);
+            console.log(input.className);
+            const beatNumber = Number(input.className.split(" ")[0]);
             const tag = Number(input.value);
 
             //Update accent array
