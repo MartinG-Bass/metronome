@@ -3,7 +3,7 @@ const noteLength = 0.05;
 const lookAheadTime = 0.25;
 let audioContext = new AudioContext();
 let tempo = 120.0;
-//let playing = false;
+let playing = false;
 //let nextBeatTime = 0;
 //let playMetronome = null;
 //let beatCounter = 1;
@@ -115,7 +115,7 @@ addMetronomeButton.addEventListener("click", () => {
     metronomeContainer.classList.add("removable");
     metronomeContainer.id = "metronome"+numberOfMetronomes;
     body.appendChild(metronomeContainer);
-
+        
     //Button to remove the new metronome
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "-";
@@ -142,6 +142,13 @@ function Metronome(){
     let internalTempo;
     let drawedBeats = [];
     
+    this.stopMetronome = function(){
+        playButton.textContent = "Start";
+        clearInterval(playMetronome);
+        playMetronome = null;
+        resetBeats();
+    }
+
     //Function to Start/Stop the metronome
     const playButton = document.getElementById("playButton");
     playButton.addEventListener("click", () => {
@@ -155,13 +162,17 @@ function Metronome(){
             nextBeatTime = audioContext.currentTime + 0.1;
             playMetronome = setInterval(scheduler, 100);
         } else{ //Off
-            playButton.textContent = "Start";
-            clearInterval(playMetronome);
-            playMetronome = null;
-            resetBeats();
+            this.stopMetronome();
         }
     }); 
     
+    this.stopMetronome = function(){
+        playButton.textContent = "Start";
+        clearInterval(playMetronome);
+        playMetronome = null;
+        resetBeats();
+    }
+
     this.updateInternalTempo = function(){
         if(!metronomeArray[0]){
             internalTempo = tempo;
