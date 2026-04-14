@@ -49,8 +49,7 @@ tempoInput.addEventListener("input", (e) => {
     tempoShown.textContent = e.target.value;
     tempo = e.target.value;
     metronomeArray.forEach((metronome) =>{
-        metronome.internalTempo = tempo*metronome.getMeasure()/metronomeArray[0].getMeasure();
-        console.log(metronome.internalTempo);
+        metronome.updateInternalTempo();
     });
 });
 
@@ -324,7 +323,6 @@ function Metronome(){
 
         const beatInputs = document.querySelectorAll(`select[name="beatInput"].metronome`+numberOfMetronomes);
         beatInputs.forEach((input)=>{input.addEventListener("change",()=>{
-            console.log(input.className);
             const beatNumber = Number(input.className.split(" ")[0]);
             const tag = Number(input.value);
 
