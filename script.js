@@ -18,6 +18,8 @@ let measuresPlayed = 0;
 //let notesInQueue = [];
 let numberOfMetronomes = 1;
 let metronomeArray = [];
+let forcedFristBeatTime = 0;
+
 /* Not needed for now, maybe in the future
 
 var buffer = audioContext.createBuffer(1, 1, 22050);
@@ -217,17 +219,24 @@ function Metronome(){
     }
     
     function setNextBeat(){
-        nextBeatTime += 60/internalTempo;
         beatCounter++;
         if(beatCounter >  measure){
             beatCounter = 1;
         }
-        if(beatCounter===1 && flexDiv.id === "metronome"+highestMeasureMetronome()){
+        if(beatCounter===1 && flexDiv.id !== "metronome"+lowestMeasureMetronome() && forcedFristBeatTime > nextBeatTime){
+            nextBeatTime = forcedFristBeatTime;
+        } else{
+            nextBeatTime += 60/internalTempo;
+        }   
+        
+        if(beatCounter===1 && flexDiv.id === "metronome"+lowestMeasureMetronome()){
                 measuresPlayed++;
+                forcedFristBeatTime = nextBeatTime;
                 if(tempoPrograming){
                     updateTempo();
             }
         } 
+        
     }
 
     function resetBeats(){
@@ -390,12 +399,13 @@ function updateAllInternalTempos(){
     metronomeArray.forEach((metronome)=>{metronome.updateInternalTempo()});
 }
 
-function highestMeasureMetronome(){
-    const highest = metronomeArray[0].getMeasure();
+function lowestMeasureMetronome(){
+    const lowest = metronomeArray[0].getMeasure();
     const metronome = 1;
     for(i=1; i < metronomeArray.length; i++){
-        if(highest < metronomeArray[i].getMeasure){
+        if(lowest > metronomeArray[i].getMeasure){
             metronome = i;
+            lowest = metronomeArray[i].getMeasure;
         }
     }
     return metronome;
