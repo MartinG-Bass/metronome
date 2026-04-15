@@ -12,6 +12,7 @@ let tempoPrograming = false;
 let initialTempo = tempo;
 let finalTempo = tempo;
 let numberOfMeasures = 0;
+let measuresPlayed = 0;
 //let measure = 4;
 //let lastNoteDrawn = 1;
 //let notesInQueue = [];
@@ -24,13 +25,13 @@ var node = audioContext.createBufferSource();
 node.buffer = buffer;
 node.start(0);*/
 
-//We are gonna update the tempo every beat
+//We are gonna update the tempo every measure
 function updateTempo(){
-    const numberOfBeats = numberOfMeasures * measure;
-    const step = (finalTempo - initialTempo)/numberOfBeats;
+    const step = (finalTempo - initialTempo)/numberOfMeasures;
     tempo += step;
     tempoInput.value = tempo;
     tempoShown.textContent = Math.floor(tempo);
+    updateAllInternalTempos();
     if(initialTempo<finalTempo && tempo>=finalTempo){
         tempoPrograming = false;
     } else if(initialTempo>finalTempo && tempo<=finalTempo){
@@ -165,13 +166,6 @@ function Metronome(){
             this.stopMetronome();
         }
     }); 
-    
-    this.stopMetronome = function(){
-        playButton.textContent = "Start";
-        clearInterval(playMetronome);
-        playMetronome = null;
-        resetBeats();
-    }
 
     this.updateInternalTempo = function(){
         if(!metronomeArray[0]){
@@ -224,6 +218,13 @@ function Metronome(){
         beatCounter++;
         if(beatCounter >  measure){
             beatCounter = 1;
+            if(flexDiv.id === "metronome1"){
+                measuresPlayed++;
+                console.log(measuresPlayed);
+                if(tempoPrograming){
+                    updateTempo();
+                }
+            } 
         }
     }
 
@@ -372,7 +373,6 @@ function Metronome(){
             drawedBeats[beatCounter-1].style.backgroundColor = "blue";
             drawedBeats[beatCounter-2].style.backgroundColor = "black";
         }
-        console.log(drawedBeats[1].className);
     }
 
     this.getMeasure = function (){ return measure;}
