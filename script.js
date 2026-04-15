@@ -100,6 +100,9 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
             
             tempo = initialTempo;
             tempoPrograming = true;
+            tempoInput.value = tempo;
+            tempoShown.textContent = Math.floor(tempo);
+            updateAllInternalTempos();
             console.log(initialTempo,finalTempo, numberOfMeasures);
         });
     } else{
