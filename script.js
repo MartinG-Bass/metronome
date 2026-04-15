@@ -221,13 +221,13 @@ function Metronome(){
         beatCounter++;
         if(beatCounter >  measure){
             beatCounter = 1;
-            if(flexDiv.id === "metronome1"){
+        }
+        if(beatCounter===1 && flexDiv.id === "metronome"+highestMeasureMetronome()){
                 measuresPlayed++;
                 if(tempoPrograming){
                     updateTempo();
-                }
-            } 
-        }
+            }
+        } 
     }
 
     function resetBeats(){
@@ -388,6 +388,17 @@ function Metronome(){
 
 function updateAllInternalTempos(){
     metronomeArray.forEach((metronome)=>{metronome.updateInternalTempo()});
+}
+
+function highestMeasureMetronome(){
+    const highest = metronomeArray[0].getMeasure();
+    const metronome = 1;
+    for(i=1; i < metronomeArray.length; i++){
+        if(highest < metronomeArray[i].getMeasure){
+            metronome = i;
+        }
+    }
+    return metronome;
 }
  
 metronomeArray.push(new Metronome());
