@@ -1,6 +1,6 @@
 //Global Variables and Constants
 const noteLength = 0.05;
-const lookAheadTime = 0.25;
+const lookAheadTime = 0.1;
 let audioContext = new AudioContext();
 let tempo = 120.0;
 //let playing = false;
@@ -164,7 +164,7 @@ function Metronome(){
             playButton.textContent = "Stop";
             drawBeats();
             nextBeatTime = audioContext.currentTime + 0.1;
-            playMetronome = setInterval(scheduler, 100);
+            playMetronome = setInterval(scheduler, 50);
         } else{ //Off
             this.stopMetronome();
         }
