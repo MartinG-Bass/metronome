@@ -220,7 +220,6 @@ function Metronome(){
             beatCounter = 1;
             if(flexDiv.id === "metronome1"){
                 measuresPlayed++;
-                console.log(measuresPlayed);
                 if(tempoPrograming){
                     updateTempo();
                 }
