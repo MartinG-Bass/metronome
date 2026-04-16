@@ -121,14 +121,19 @@ addMetronomeButton.addEventListener("click", () => {
     metronomeContainer.classList.add("removable");
     metronomeContainer.id = "metronome"+numberOfMetronomes;
     body.appendChild(metronomeContainer);
-        
+    let metronomeTag = numberOfMetronomes;
+
     //Button to remove the new metronome
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "-";
     metronomeContainer.appendChild(deleteBtn);
     deleteBtn.addEventListener("click", () => {
         body.removeChild(metronomeContainer);
+        metronomeArray[metronomeTag-1].deleteMetronome();
+        metronomeArray[metronomeTag-1] = null;
+        metronomeArray.splice(metronomeTag-1, 1);
         numberOfMetronomes--;
+        console.log(metronomeArray);
     });
     
     //Create the new metronome
@@ -148,7 +153,7 @@ function Metronome(){
     let internalTempo;
     let drawedBeats = [];
     
-    this.stopMetronome = function(){
+    function stopMetronome (){
         playButton.textContent = "Start";
         clearInterval(playMetronome);
         playMetronome = null;
@@ -157,7 +162,8 @@ function Metronome(){
 
     //Function to Start/Stop the metronome
     const playButton = document.getElementById("playButton");
-    playButton.addEventListener("click", () => {
+    playButton.addEventListener("click", play);
+    function play(){
         //On/Off
         playing = !playing;
         
@@ -168,9 +174,9 @@ function Metronome(){
             nextBeatTime = audioContext.currentTime + 0.1;
             playMetronome = setInterval(scheduler, 50);
         } else{ //Off
-            this.stopMetronome();
+            stopMetronome();
         }
-    }); 
+    }
 
     this.updateInternalTempo = function(){
         if(!metronomeArray[0]){
@@ -384,6 +390,12 @@ function Metronome(){
             drawedBeats[beatCounter-1].style.backgroundColor = "blue";
             drawedBeats[beatCounter-2].style.backgroundColor = "black";
         }
+    }
+
+    this.deleteMetronome = function (){
+        playButton.removeEventListener("click", play);
+        //delete playButton;
+        //delete this.stopMetronome;
     }
 
     this.getMeasure = function (){ return measure;}
