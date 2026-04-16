@@ -119,9 +119,9 @@ addMetronomeButton.addEventListener("click", () => {
     numberOfMetronomes++;
     metronomeContainer.classList.add("metronome");
     metronomeContainer.classList.add("removable");
+    metronomeContainer.classList.add(numberOfMetronomes);
     metronomeContainer.id = "metronome"+numberOfMetronomes;
     body.appendChild(metronomeContainer);
-    let metronomeTag = numberOfMetronomes;
 
     //Button to remove the new metronome
     const deleteBtn = document.createElement("button");
@@ -129,16 +129,22 @@ addMetronomeButton.addEventListener("click", () => {
     metronomeContainer.appendChild(deleteBtn);
     deleteBtn.addEventListener("click", () => {
         body.removeChild(metronomeContainer);
+        const metronomeTag = metronomeContainer.className.split(" ")[2];
+        if(metronomeTag < numberOfMetronomes){
+            updateMetronomeTags(metronomeTag);
+        }
+        
         metronomeArray[metronomeTag-1].deleteMetronome();
         metronomeArray[metronomeTag-1] = null;
         metronomeArray.splice(metronomeTag-1, 1);
+        
+        
         numberOfMetronomes--;
         console.log(metronomeArray);
-    });
-    
+    }); 
+
     //Create the new metronome
     metronomeArray.push(new Metronome());
-     
 });
 
 function Metronome(){
@@ -152,7 +158,8 @@ function Metronome(){
     let notesInQueue = [];
     let internalTempo;
     let drawedBeats = [];
-    
+    this.internalTag = numberOfMetronomes;
+
     function stopMetronome (){
         playButton.textContent = "Start";
         clearInterval(playMetronome);
@@ -422,7 +429,16 @@ function lowestMeasureMetronome(){
     }
     return metronome;
 }
- 
+
+function updateMetronomeTags(deletedTag){
+    for(i = Number(deletedTag); i < metronomeArray.length; i++){
+        const index = i+1;
+        const metronomeContainer = document.getElementById("metronome"+index);
+        //metronomeContainer.className("metronome removable "+i);
+        metronomeContainer.id = "metronome"+i; 
+        console.log(metronomeContainer.id);
+    }
+}
 metronomeArray.push(new Metronome());
 
 
