@@ -434,7 +434,7 @@ function updateMetronomeTags(deletedTag){
     for(i = Number(deletedTag); i < metronomeArray.length; i++){
         const index = i+1;
         const metronomeContainer = document.getElementById("metronome"+index);
-        //metronomeContainer.className("metronome removable "+i);
+        metronomeContainer.className = "metronome removable "+i;
         metronomeContainer.id = "metronome"+i; 
         console.log(metronomeContainer.id);
     }
