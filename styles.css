@@ -57,6 +57,11 @@ button{
     padding: 0px 30px;
 }
 
+#tempoInput{
+    accent-color: rgb(255, 176, 48);
+    width: 200px;
+}
+
 .beat{
     background-color: black;
     padding: 12px;
