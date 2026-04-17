@@ -161,7 +161,7 @@ function Metronome(){
     this.internalTag = numberOfMetronomes;
 
     function stopMetronome (){
-        playButton.textContent = "Start";
+        playButton.textContent = "⏵";
         clearInterval(playMetronome);
         playMetronome = null;
         resetBeats();
@@ -176,7 +176,7 @@ function Metronome(){
         
         //On
         if(playing){
-            playButton.textContent = "Stop";
+            playButton.textContent = '⏸';
             drawBeats();
             nextBeatTime = audioContext.currentTime + 0.1;
             playMetronome = setInterval(scheduler, 50);

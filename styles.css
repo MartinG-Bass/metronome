@@ -1,3 +1,7 @@
+body{
+    background-color: rgb(252, 241, 222);
+}
+
 #container{
     display: flex;
     flex-direction: column;
@@ -9,9 +13,9 @@
 #head, #body{
     background-color: bisque;
     padding: 30px;
-    border: 1px orange solid;
-    border-radius: 5px;
-    width: 90%;
+    border: 2px orange solid;
+    border-radius: 15px;
+    width: 95%;
 }
 
 #body{
@@ -42,14 +46,15 @@
 
 button{
     background-color: rgb(58, 150, 255);
-    color: rgb(227, 216, 195);
-    border: 1px rgb(237, 186, 152) solid;
+    color: rgb(255, 255, 255);
+    border: 1px rgba(41, 80, 252, 0.802) solid;
     border-radius: 5px;
     padding: 5px 10px;
 }
 
 #playButton{
-    font-size: 1.5rem;
+    font-size: 3rem;
+    padding: 0px 30px;
 }
 
 .beat{
