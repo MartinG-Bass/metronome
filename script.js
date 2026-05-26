@@ -16,6 +16,8 @@ let measuresPlayed = 0;
 let emptyMeasuresPrograming = false;
 let soundingMeasures = 0;
 let tacetMeasures = 0;
+let measureLoop = 0;
+let measureNumber = 5;
 //let measure = 4;
 //let lastNoteDrawn = 1;
 //let notesInQueue = [];
@@ -159,14 +161,24 @@ emptyMeasuresCheckBox.addEventListener("change", ()=>{
             tacetMeasures = Number(tacetMeasuresInput.value);
             
             emptyMeasuresPrograming = true;
+            measureLoop = soundingMeasures + tacetMeasures;
 
             console.log(soundingMeasures, tacetMeasures, emptyMeasuresPrograming);
         });
     } else{
         emptyMeasuresContainer.removeChild(emptyMeasuresContainer.lastChild);
         emptyMeasuresPrograming = false;
+        measureLoop = 0;
     }
 });
+
+function thisMeasureIsEmpty(){
+    if(measureNumber > soundingMeasures){
+        return true;
+    } else{
+        return false;
+    }
+}
 
 const addMetronomeButton = document.getElementById("addMetronome");
 addMetronomeButton.addEventListener("click", () => {
@@ -266,6 +278,10 @@ function Metronome(){
         const beatTag = accentedBeats[beatCounter-1];
         updateBeat();
         if(beatTag === 0){//Skipped Beat
+            return;
+        }
+        //We check if empty measures is on, and if we should tacet in this measure
+        if(emptyMeasuresPrograming && thisMeasureIsEmpty()){
             return;
         }
 
