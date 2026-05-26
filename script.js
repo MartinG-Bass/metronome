@@ -17,7 +17,7 @@ let emptyMeasuresPrograming = false;
 let soundingMeasures = 0;
 let tacetMeasures = 0;
 let measureLoop = 0;
-let measureNumber = 5;
+let measureNumber = 1;
 //let measure = 4;
 //let lastNoteDrawn = 1;
 //let notesInQueue = [];
@@ -162,13 +162,17 @@ emptyMeasuresCheckBox.addEventListener("change", ()=>{
             
             emptyMeasuresPrograming = true;
             measureLoop = soundingMeasures + tacetMeasures;
+            measureNumber = 1;
 
             console.log(soundingMeasures, tacetMeasures, emptyMeasuresPrograming);
+        });
+
+        resetBtn.addEventListener("click", ()=>{
+            emptyMeasuresPrograming = false;
         });
     } else{
         emptyMeasuresContainer.removeChild(emptyMeasuresContainer.lastChild);
         emptyMeasuresPrograming = false;
-        measureLoop = 0;
     }
 });
 
@@ -307,6 +311,12 @@ function Metronome(){
         beatCounter++;
         if(beatCounter >  measure){
             beatCounter = 1;
+            if(emptyMeasuresPrograming && flexDiv.id === "metronome"+highestMeasureMetronome()){
+                measureNumber++;
+                if(measureNumber > measureLoop){
+                    measureNumber = 1;
+                }
+            }
         }
         if(beatCounter===1 && flexDiv.id !== "metronome"+lowestMeasureMetronome() && forcedFristBeatTime > nextBeatTime){
             nextBeatTime = forcedFristBeatTime;
@@ -491,12 +501,24 @@ function updateAllInternalTempos(){
 }
 
 function lowestMeasureMetronome(){
-    const lowest = metronomeArray[0].getMeasure();
-    const metronome = 1;
+    let lowest = metronomeArray[0].getMeasure();
+    let metronome = 1;
     for(i=1; i < metronomeArray.length; i++){
         if(lowest > metronomeArray[i].getMeasure){
             metronome = i;
             lowest = metronomeArray[i].getMeasure;
+        }
+    }
+    return metronome;
+}
+
+function highestMeasureMetronome(){
+    let highest = metronomeArray[0].getMeasure();
+    let metronome = 1;
+    for(i=1; i < metronomeArray.length; i++){
+        if(highest < metronomeArray[i].getMeasure){
+            metronome = i;
+            highest = metronomeArray[i].getMeasure;
         }
     }
     return metronome;
