@@ -13,6 +13,9 @@ let initialTempo = tempo;
 let finalTempo = tempo;
 let numberOfMeasures = 0;
 let measuresPlayed = 0;
+let emptyMeasuresPrograming = false;
+let soundingMeasures = 0;
+let tacetMeasures = 0;
 //let measure = 4;
 //let lastNoteDrawn = 1;
 //let notesInQueue = [];
@@ -109,6 +112,59 @@ tempoProgramingCheckBox.addEventListener("change", ()=>{
         });
     } else{
         tempoProgramingContainer.removeChild(tempoProgramingContainer.lastChild);
+    }
+});
+
+
+const emptyMeasuresCheckBox = document.getElementById("emptyMeasuresPrograming");
+emptyMeasuresCheckBox.addEventListener("change", ()=>{
+    const emptyMeasuresContainer = document.getElementById("emptyMeasuresContainer");
+
+    if(emptyMeasuresCheckBox.checked){
+        //Form
+        const measuresForm = document.createElement("form");
+        
+        //Inputs
+        const soundingMeasuresInput = document.createElement("input");
+        const tacetMeasuresInput = document.createElement("input");
+        
+        //Labels
+        const soundingMeasuresLabel = document.createElement("label");
+        const tacetMeasuresLabel = document.createElement("label");
+        
+        //Button
+        const submitBtn = document.createElement("button");
+        const resetBtn = document.createElement("button");
+        //Text Content
+        soundingMeasuresLabel.textContent = "Sounding Measures";
+        tacetMeasuresLabel.textContent = "Tacet Measures";
+        
+        submitBtn.textContent = "Submit";
+        submitBtn.type="button";
+        resetBtn.textContent = "Clear";
+        resetBtn.type = "reset";
+;
+        measuresForm.appendChild(soundingMeasuresLabel);
+        measuresForm.appendChild(soundingMeasuresInput);
+        measuresForm.appendChild(tacetMeasuresLabel);
+        measuresForm.appendChild(tacetMeasuresInput);
+        
+        measuresForm.appendChild(submitBtn);
+        measuresForm.appendChild(resetBtn);
+
+        emptyMeasuresContainer.appendChild(measuresForm);
+
+        submitBtn.addEventListener("click", ()=>{
+            soundingMeasures = Number(soundingMeasuresInput.value);
+            tacetMeasures = Number(tacetMeasuresInput.value);
+            
+            emptyMeasuresPrograming = true;
+
+            console.log(soundingMeasures, tacetMeasures, emptyMeasuresPrograming);
+        });
+    } else{
+        emptyMeasuresContainer.removeChild(emptyMeasuresContainer.lastChild);
+        emptyMeasuresPrograming = false;
     }
 });
 
